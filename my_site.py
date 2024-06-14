@@ -1,5 +1,6 @@
 import flet as ft
 import datetime
+import requests
 
 def main(page: ft.Page):
     page.title = "Controle de validade digital"
