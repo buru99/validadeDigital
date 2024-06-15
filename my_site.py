@@ -2,8 +2,6 @@ import flet as ft
 import datetime
 import requests
 
-
-
 def main(page: ft.Page):
     page.adaptive = True
     page.title = "Controle de Validade Digital"
@@ -86,7 +84,7 @@ def main(page: ft.Page):
         # Enviar os dados para o servidor Flask
         response = requests.post('https://web-production-7ce3.up.railway.app/save_report', json={"data": produtos})
         if response.status_code == 200:
-            # Se a resposta foi bem-sucedida, abrir o link para fazer o download do relatório
+            # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
             link_url = response.url
             page.launch_url(link_url)
         else:
