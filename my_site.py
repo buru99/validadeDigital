@@ -82,14 +82,17 @@ def main(page: ft.Page):
             return
 
         # Enviar os dados para o servidor Flask
-        response = requests.post('https://web-production-7ce3.up.railway.app/save_report', json={"data": produtos})
-        if response.status_code == 200:
-            # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
-            link_url = response.url
-            page.launch_url(link_url)
-        else:
-            # Se ocorreu um erro, mostrar uma mensagem de falha
-            mostrar_snackbar("Falha ao salvar o relatório.", erro=True)
+        try:
+            response = requests.post('https://web-production-7ce3.up.railway.app/save_report', json={"data": produtos})
+            response_data = response.json()
+            if response.status_code == 200:
+                # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
+                link_url = response_data.get("download_url", "#")
+                page.launch_url(link_url)
+            else:
+                mostrar_snackbar("Falha ao salvar o relatório.", erro=True)
+        except Exception as ex:
+            mostrar_snackbar(f"Erro: {ex}", erro=True)
 
     description = ft.TextField(label="Descrição", autofocus=True)
     ean_pdt = ft.TextField(label="EAN do Produto")
@@ -107,6 +110,6 @@ def main(page: ft.Page):
     clean_button = ft.FloatingActionButton("Limpar Lista", on_click=limpar_tudo, width=100)
 
     page.overlay.append(data)
-    page.add(ft.Column([description, ean_pdt, quantidade, botao_data,ft.Row([adc_button, clean_button]), list_container,ft.Container(padding=5)], expand=True))
+    page.add(ft.Column([description, ean_pdt, quantidade, botao_data, ft.Row([adc_button, clean_button]), list_container, ft.Container(padding=5)], expand=True))
 
 ft.app(target=main)
