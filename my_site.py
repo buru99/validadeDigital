@@ -84,7 +84,7 @@ def main(page: ft.Page):
             return
 
         # Enviar os dados para o servidor Flask
-        response = requests.post('https://web-production-7ce3.up.railway.app//save_report', json={"data": produtos})
+        response = requests.post('https://web-production-7ce3.up.railway.app/save_report', json={"data": produtos})
         if response.status_code == 200:
             # Se a resposta foi bem-sucedida, abrir o link para fazer o download do relatório
             link_url = response.url
