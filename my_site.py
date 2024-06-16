@@ -89,8 +89,9 @@ def main(page: ft.Page):
                     response_data = response.json()
                     # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
                     link_url = response_data.get("download_url")
+                    link_download = 'http://web-production-7ce3.up.railway.app/download/relatorio.xlsx'
                     if link_url:
-                        page.launch_url(link_url)
+                        page.launch_url(link_download)
                     else:
                         mostrar_snackbar("Erro ao obter URL de download.", erro=True)
                 except ValueError:
