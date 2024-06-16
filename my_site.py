@@ -84,15 +84,21 @@ def main(page: ft.Page):
         # Enviar os dados para o servidor Flask
         try:
             response = requests.post('https://web-production-7ce3.up.railway.app/save_report', json={"data": produtos})
-            response_data = response.json()
             if response.status_code == 200:
-                # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
-                link_url = response_data.get("download_url", "#")
-                page.launch_url(link_url)
+                try:
+                    response_data = response.json()
+                    # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
+                    link_url = response_data.get("download_url")
+                    if link_url:
+                        page.launch_url(link_url)
+                    else:
+                        mostrar_snackbar("Erro ao obter URL de download.", erro=True)
+                except ValueError:
+                    mostrar_snackbar("Resposta JSON inválida.", erro=True)
             else:
-                mostrar_snackbar("Falha ao salvar o relatório.", erro=True)
-        except Exception as ex:
-            mostrar_snackbar(f"Erro: {ex}", erro=True)
+                mostrar_snackbar(f"Falha ao salvar o relatório. Código de status: {response.status_code}", erro=True)
+        except requests.RequestException as ex:
+            mostrar_snackbar(f"Erro na requisição: {ex}", erro=True)
 
     description = ft.TextField(label="Descrição", autofocus=True)
     ean_pdt = ft.TextField(label="EAN do Produto")
