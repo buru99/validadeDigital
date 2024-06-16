@@ -76,12 +76,6 @@ def main(page: ft.Page):
         page.snack_bar.open = True
         page.update()
 
-
-
-    def download(e):
-           link_download = 'http://web-production-7ce3.up.railway.app/download/relatorio.xlsx'
-           page.launch_url(link_download) 
-
     def salvar_relatorio(e):
         if not produtos:
             mostrar_snackbar("Nenhum produto para salvar.")
@@ -95,9 +89,9 @@ def main(page: ft.Page):
                     response_data = response.json()
                     # Se a resposta foi bem-sucedida, obter o link de redirecionamento para download
                     link_url = response_data.get("download_url")
-                    
+                    link_download = 'http://web-production-7ce3.up.railway.app/download/relatorio.xlsx'
                     if link_url:
-                        pass
+                        page.launch_url(link_download)
                     else:
                         mostrar_snackbar("Erro ao obter URL de download.", erro=True)
                 except ValueError:
@@ -112,17 +106,15 @@ def main(page: ft.Page):
     quantidade = ft.TextField(label="Quantidade")
     data = ft.DatePicker(datetime.datetime.now())
     enviar = ft.TextButton(icon=ft.icons.SAVE, text="Salvar relatório", on_click=salvar_relatorio)
-    download_button = ft.TextButton("download", on_click=download)
 
     page.bottom_appbar = ft.BottomAppBar(
-        bgcolor=ft.colors.TRANSPARENT, content=ft.Row(controls=[enviar, download_button])
+        bgcolor=ft.colors.TRANSPARENT, content=ft.Row(controls=[enviar])
     )
 
     adc_button = ft.FloatingActionButton("Adicionar", on_click=adc, width=100)
     list_container = ft.Container(content=produtos_list_view, height=300, expand=True)
     botao_data = ft.ElevatedButton("Validade do Produto", icon=ft.icons.CALENDAR_MONTH, on_click=lambda _: data.pick_date())
     clean_button = ft.FloatingActionButton("Limpar Lista", on_click=limpar_tudo, width=100)
-    
 
     page.overlay.append(data)
     page.add(ft.Column([description, ean_pdt, quantidade, botao_data, ft.Row([adc_button, clean_button]), list_container, ft.Container(padding=5)], expand=True))
