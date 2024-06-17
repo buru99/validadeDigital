@@ -91,7 +91,7 @@ def main(page: ft.Page):
                     link_url = response_data.get("download_url")
                     link_download = 'http://web-production-7ce3.up.railway.app/download/relatorio.xlsx'
                     if link_url:
-                        page.launch_url(link_download)
+                        page.launch_url(link_download, new_window=True)
                     else:
                         mostrar_snackbar("Erro ao obter URL de download.", erro=True)
                 except ValueError:
