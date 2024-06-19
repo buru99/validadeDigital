@@ -6,7 +6,6 @@ def main(page: ft.Page):
     page.adaptive = True
     page.title = "Controle de Validade Digital"
     produtos = []
-
     produtos_list_view = ft.ListView(expand=1, spacing=5, padding=20, auto_scroll=True)
     produtos_list_view.adaptive = True
 
